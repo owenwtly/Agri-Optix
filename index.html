@@ -3,278 +3,197 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AgriOptix — Automating agriculture one frame at a time</title>
-  <meta name="description" content="AgriOptix builds computer-vision systems for agriculture: weighbridge automation, bale counting, and smart farm analytics." />
+  <title>AgriOptix — Automating agriculture one farm at a time</title>
+  <meta name="description" content="AgriOptix builds practical, camera-based automation for agriculture: bale counting, weighbridge automation, and more." />
 
-  <!-- Fonts (privacy-friendly, system-first) -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Optional: Google Fonts (safe to use on GitHub Pages) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#0b0b0c;
-      --panel:#121214;
-      --muted:#b8bcc3;
-      --text:#eef2f7;
-      --accent:#ff7a1a; /* primary orange */
-      --accent-2:#ffb36b; /* warm highlight */
-      --radius:18px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --maxw:1100px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font:400 16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text);
-      background:radial-gradient(1200px 800px at 15% 0%, #121216 0%, #0b0b0c 60%);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    a{color:var(--accent);text-decoration:none}
-    .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 20px}
-
-    /* Header */
-    header{
-      position:fixed; inset:0 0 auto 0; height:70px; z-index:20;
-      backdrop-filter:saturate(140%) blur(6px);
-      background:linear-gradient(180deg, rgba(18,18,20,.85), rgba(18,18,20,.55) 65%, transparent);
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .nav{
-      height:70px; display:flex; align-items:center; justify-content:space-between;
-    }
-    .brand{
-      font-weight:800; letter-spacing:.5px; display:flex; align-items:center; gap:.6rem;
-    }
-    .brand .monogram{
-      width:38px;height:38px;border-radius:12px;
-      background:conic-gradient(from 220deg at 50% 50%, var(--accent), var(--accent-2));
-      display:grid; place-items:center; color:#0b0b0c; font-weight:900;
-      text-shadow:0 1px 0 rgba(255,255,255,.35);
-    }
-    .brand span{opacity:.95}
-    .nav a.btn{
-      padding:.55rem .9rem; border-radius:12px; border:1px solid rgba(255,255,255,.12);
-      color:var(--text); transition:transform .2s ease, background .2s ease, border-color .2s ease;
-    }
-    .nav a.btn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.04)}
-
-    /* Hero */
-    .hero{
-      position:relative; min-height:86vh; display:grid; place-items:center; text-align:center; overflow:hidden;
-      padding-top:70px;
-      background:
-        radial-gradient(60% 80% at 80% 10%, rgba(255,122,26,.12), transparent 60%),
-        radial-gradient(50% 60% at 0% 80%, rgba(255,179,107,.12), transparent 60%);
-    }
-    .hero .bg{
-      position:absolute; inset:-10% -10% -20% -10%;
-      background:url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
-      filter:contrast(.9) saturate(.9) brightness(.55);
-      transform:translateY(0); will-change:transform; transition:transform .8s ease-out;
-      opacity:.32;
-    }
-    .hero-inner{position:relative; z-index:2}
-    h1{
-      font-weight:800; font-size:clamp(36px, 6vw, 56px); line-height:1.05; margin:0 0 .6rem;
-      letter-spacing:.2px;
-    }
-    .tag{color:var(--muted); font-size:clamp(16px, 2.6vw, 18px); max-width:720px; margin:0 auto 1.2rem}
-    .cta{display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap}
-    .btn-primary{
-      background:linear-gradient(180deg, var(--accent), var(--accent-2));
-      color:#1a120b; font-weight:800; border:0; border-radius:14px;
-      padding:.85rem 1.1rem; box-shadow:0 8px 20px rgba(255,122,26,.28);
-      transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
-    }
-    .btn-primary:hover{transform:translateY(-2px); box-shadow:0 12px 26px rgba(255,122,26,.36); filter:saturate(1.05)}
-    .btn-ghost{
-      border:1px solid rgba(255,255,255,.16); color:var(--text);
-      padding:.85rem 1.05rem; border-radius:14px; background:rgba(255,255,255,.03);
-    }
-    .btn-ghost:hover{border-color:rgba(255,255,255,.28); background:rgba(255,255,255,.05)}
-
-    /* Sections */
-    section{padding:72px 0}
-    .panel{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); box-shadow:var(--shadow)}
-    .heading{
-      display:flex; align-items:center; gap:.75rem; margin:0 0 18px; font-size:26px; letter-spacing:.3px;
-    }
-    .heading .accent{
-      display:inline-block; height:12px; width:42px; border-radius:999px;
-      background:linear-gradient(90deg, var(--accent), var(--accent-2));
-      position:relative; overflow:hidden;
-    }
-    .heading .accent::after{
-      content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(255,255,255,.2), transparent);
-      transform:translateX(-100%); animation:shine 3s ease-in-out infinite;
-    }
-    @keyframes shine{50%{transform:translateX(100%)}}
-
-    .grid{display:grid; gap:16px}
-    @media (min-width:900px){ .grid{grid-template-columns:1.1fr 1fr} }
-
-    .card{
-      background:linear-gradient(180deg, #141416, #101014); border:1px solid rgba(255,255,255,.06);
-      border-radius:16px; padding:20px; transition:transform .2s ease, border-color .2s ease;
-    }
-    .card:hover{transform:translateY(-3px); border-color:rgba(255,255,255,.12)}
-    .kicker{font-size:12px; text-transform:uppercase; letter-spacing:.18em; color:#c9cdd4; opacity:.75}
-    .card h3{margin:.3rem 0 .35rem; font-size:20px}
-    .card p{color:#cfd3da; margin:.2rem 0 .8rem}
-
-    /* Contact */
-    .contact{
-      display:grid; gap:14px; padding:22px; border:1px dashed rgba(255,255,255,.14); border-radius:14px;
-      background:linear-gradient(180deg, rgba(255,255,255,.02), transparent);
-    }
-    .contact a{font-weight:600}
-    footer{padding:40px 0 60px; color:#aeb3ba; text-align:center}
-
-    /* Scroll reveal */
-    .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease}
-    .reveal.visible{opacity:1; transform:none}
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <div class="wrap nav">
-      <div class="brand">
-        <div class="monogram">AO</div>
-        <span>AgriOptix</span>
+  <!-- Top brand header (logo, title, tagline) -->
+  <header class="brand-header" id="top">
+    <div class="brand-wrap container">
+      <a class="logo" href="#top" aria-label="AgriOptix Home">
+        <!-- If you add /media/logo.png it will be used automatically via CSS.
+             Otherwise a styled AO monogram will show. -->
+        <span class="logo-fallback">AO</span>
+      </a>
+      <div class="brand-text">
+        <h1 class="site-title">AgriOptix</h1>
+        <p class="site-tagline">Automating agriculture one farm at a time</p>
       </div>
-      <nav>
-        <a class="btn" href="#projects">Projects</a>
-        <a class="btn" href="#contact">Contact</a>
-      </nav>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="bg" id="heroParallax"></div>
-    <div class="hero-inner wrap">
-      <h1 class="reveal">Automating agriculture<br/>one frame at a time</h1>
-      <p class="tag reveal" style="transition-delay:.08s">
-        Computer-vision systems for weighbridge automation, bale counting, and on-farm analytics.
-      </p>
-      <div class="cta reveal" style="transition-delay:.14s">
-        <a href="#projects" class="btn-primary">Explore projects</a>
-        <a href="#contact" class="btn-ghost">Get in touch</a>
-      </div>
+  <!-- Main nav sits BELOW the title/tagline -->
+  <nav class="main-nav" id="mainNav">
+    <div class="container">
+      <ul>
+        <li><a class="nav-link" href="#home">Home</a></li>
+        <li><a class="nav-link" href="#about">About Us</a></li>
+        <li><a class="nav-link" href="#products">Products</a></li>
+        <li><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
     </div>
-  </section>
+  </nav>
 
-  <section class="wrap">
-    <div class="grid">
-      <div class="panel reveal">
-        <h2 class="heading"><span class="accent"></span> About AgriOptix</h2>
-        <p>
-          We build practical AI tools that understand agricultural scenes in real time. Our prototype systems
-          use camera calibration, geometric reasoning, and selective ML where it truly adds value — delivering
-          automation without the hype.
-        </p>
+  <main>
+    <!-- Home / Hero -->
+    <section id="home" class="section hero section-observe">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h2 class="fade-in">Smarter automation for real farms</h2>
+          <p class="fade-in delay-1">
+            We build practical, camera-based automation for agricultural operations.
+            From weighbridge logging to bale counting, AgriOptix helps farms work faster,
+            safer, and with better data.
+          </p>
+          <a href="#products" class="cta fade-in delay-2" aria-label="Explore our products">Explore our products →</a>
+        </div>
+        <div class="hero-media fade-in delay-2">
+          <img src="media/placeholder.png" alt="Product preview placeholder" />
+        </div>
       </div>
-      <div class="panel reveal" style="transition-delay:.08s">
-        <h2 class="heading"><span class="accent"></span> What we value</h2>
-        <ul>
-          <li><strong>Reliability first</strong> — systems that work on real farms, not just in demos.</li>
-          <li><strong>Edge efficiency</strong> — lightweight compute, low bandwidth, high uptime.</li>
-          <li><strong>Operator-friendly</strong> — clear interfaces and verifiable outputs.</li>
-        </ul>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section section-observe">
+      <div class="container">
+        <header class="section-head fade-in">
+          <h2>About Us</h2>
+          <p>
+            AgriOptix was founded to bring modern computer vision to everyday farm workflows.
+            We’re developing AI-powered systems that automate and enhance daily agricultural operations — starting with
+            bale counting and weighbridge automation.
+          </p>
+        </header>
+
+        <div class="card-grid">
+          <article class="card fade-in">
+            <img src="media/placeholder.png" alt="Bale Counting placeholder" />
+            <div class="card-body">
+              <h3>Bale Counting</h3>
+              <p>
+                Calibrate once, then count rows × columns from a rectified trailer face.
+                Lightweight, fast, and accurate in real-world conditions.
+              </p>
+            </div>
+          </article>
+
+          <article class="card fade-in delay-1">
+            <img src="media/placeholder.png" alt="Weighbridge Automation placeholder" />
+            <div class="card-body">
+              <h3>Weighbridge Automation</h3>
+              <p>
+                Edge Jetson devices detect trailers, capture snapshots, and post load summaries to a central dashboard
+                with operator overrides.
+              </p>
+            </div>
+          </article>
+        </div>
       </div>
+    </section>
+
+    <!-- Products -->
+    <section id="products" class="section section-observe">
+      <div class="container">
+        <header class="section-head fade-in">
+          <h2>Products</h2>
+          <p>Deployed modules, demos, and what’s coming next.</p>
+        </header>
+
+        <div class="product-grid">
+          <!-- Product 1 -->
+          <article class="product-card fade-in">
+            <img src="media/placeholder.png" alt="Bale Counting product placeholder" />
+            <div class="product-body">
+              <h3>Bale Counting</h3>
+              <p>
+                Robust counting from a single calibrated camera. Uses geometric rectification, grid snapping,
+                and temporal consensus for stable results.
+              </p>
+              <!-- YouTube placeholder -->
+              <div class="video-wrap">
+                <div class="video-16x9">
+                  <iframe
+                    src="https://www.youtube.com/embed/VIDEO_ID"
+                    title="Bale Counting demo video"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Product 2 -->
+          <article class="product-card fade-in delay-1">
+            <img src="media/placeholder.png" alt="Weighbridge Automation product placeholder" />
+            <div class="product-body">
+              <h3>Weighbridge Automation</h3>
+              <p>
+                Detect trailers, capture snapshots, and push structured logs to the operator GUI.
+                Local processing on NVIDIA Jetson; integrates with your site workflow.
+              </p>
+              <!-- YouTube placeholder -->
+              <div class="video-wrap">
+                <div class="video-16x9">
+                  <iframe
+                    src="https://www.youtube.com/embed/VIDEO_ID"
+                    title="Weighbridge Automation demo video"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Coming soon -->
+          <article class="product-card fade-in delay-2">
+            <img src="media/placeholder.png" alt="Coming soon placeholder" />
+            <div class="product-body">
+              <h3>Coming Soon</h3>
+              <ul class="coming-soon">
+                <li><strong>FarmAI</strong> — field guidance and task scheduling</li>
+                <li><strong>AgriOptix Security</strong> — asset protection and alerts</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section section-observe">
+      <div class="container">
+        <header class="section-head fade-in">
+          <h2>Contact</h2>
+          <p>Reach out for demos, pilots, or collaboration.</p>
+        </header>
+
+        <div class="contact-grid">
+          <div class="contact-card fade-in">
+            <h3>Email</h3>
+            <a class="contact-link" href="mailto:agri.optix@gmail.com">agri.optix@gmail.com</a>
+          </div>
+          <div class="contact-card fade-in delay-1">
+            <h3>GitHub</h3>
+            <a class="contact-link" href="https://github.com/owenwtly" target="_blank" rel="noreferrer">github.com/owenwtly</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> AgriOptix. All rights reserved.</p>
     </div>
-  </section>
-
-  <section class="wrap" id="projects">
-    <h2 class="heading reveal"><span class="accent"></span> Projects</h2>
-    <div class="grid">
-      <div class="card reveal">
-        <span class="kicker">Prototype</span>
-        <h3>Weighbridge Automation</h3>
-        <p>
-          Detects vehicle arrival, verifies trailer type, and links captured imagery to weight records for a
-          tamper-evident audit trail.
-        </p>
-        <a href="#contact">Learn more →</a>
-      </div>
-
-      <div class="card reveal" style="transition-delay:.06s">
-        <span class="kicker">Prototype</span>
-        <h3>Bale Counting (YOLO-free mode)</h3>
-        <p>
-          Homography-based rectification + bale dimension snapping to compute rows×columns with a confidence score;
-          optional detector overlay if needed.
-        </p>
-        <a href="#contact">Learn more →</a>
-      </div>
-
-      <div class="card reveal" style="transition-delay:.12s">
-        <span class="kicker">R&amp;D</span>
-        <h3>FarmAI (Advisory)</h3>
-        <p>
-          A decision-support assistant that ties field data, imagery and records into practical, explainable
-          recommendations.
-        </p>
-        <a href="#contact">Learn more →</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="wrap">
-    <div class="panel reveal">
-      <h2 class="heading"><span class="accent"></span> Vision</h2>
-      <p>
-        We’re building a toolkit that turns cameras into trusted, auditable sensors for agriculture. From logistics to
-        safety, our goal is simple: measurable value, delivered quietly in the background.
-      </p>
-    </div>
-  </section>
-
-  <section class="wrap" id="contact">
-    <div class="panel contact reveal">
-      <h2 class="heading"><span class="accent"></span> Contact</h2>
-      <div>
-        📧 <strong>Email:</strong> <a href="mailto:agri.optix@gmail.com">agri.optix@gmail.com</a>
-      </div>
-      <div>
-        🔗 <strong>LinkedIn:</strong> <a href="https://www.linkedin.com" target="_blank" rel="noopener">Connect</a>
-      </div>
-      <div>
-        💻 <strong>GitHub:</strong> <a href="https://github.com/owenwtly/Agri-Optix" target="_blank" rel="noopener">Project repo</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="wrap">© <span id="y"></span> AgriOptix · All rights reserved.</div>
   </footer>
 
-  <script>
-    // Year
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(el => io.observe(el));
-
-    // Subtle parallax on hero
-    const hero = document.getElementById('heroParallax');
-    let lastY = 0;
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      const dy = Math.min(80, y * 0.12);
-      if (Math.abs(dy - lastY) > 0.5){
-        hero.style.transform = `translateY(${dy}px)`;
-        lastY = dy;
-      }
-    }, { passive:true });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
