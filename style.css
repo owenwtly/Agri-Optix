@@ -37,26 +37,34 @@ body{
   gap:16px;
   padding:20px 0;
 }
-.logo{
-  display:inline-grid;
-  place-items:center;
-  width:48px; height:48px;
+
+/* Logo — image only, no fallback overlay */
+.logo {
+  display:inline-block;
+  width:48px;
+  height:48px;
   border-radius:10px;
-  background:var(--orange);
-  color:#111;
-  text-decoration:none;
-  font-weight:800;
-  letter-spacing:1px;
-  user-select:none;
-  position:relative;
   overflow:hidden;
+  text-decoration:none;
+  user-select:none;
 }
-/* If /media/logo.png exists, show it. Otherwise show "AO" fallback text. */
-.logo{ background-image:url("media/logo.png"); background-size:cover; background-position:center; }
-.logo .logo-fallback{
-  font-size:1.1rem;
-  mix-blend-mode:multiply; /* keeps readable on orange if image missing */
+
+/* Pure image logo */
+.logo-img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  border-radius:10px;
 }
+
+/* Remove any previous AO background or overlay effects */
+.logo::before,
+.logo::after {
+  content:none !important;
+  background:none !important;
+}
+
 .brand-text .site-title{
   margin:0;
   font-size:2rem;
