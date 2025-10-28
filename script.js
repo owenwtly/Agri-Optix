@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
   }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-in, .section-observe .fade-in').forEach(el => observer.observe(el));
+  document.querySelectorAll('.fade-in, .section-observe .fade-in')
+    .forEach(el => observer.observe(el));
 
   // Sticky nav styling
   const nav = document.getElementById('mainNav');
@@ -18,36 +19,38 @@ document.addEventListener('DOMContentLoaded', () => {
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // ---- Simple hash router (one 'page' visible) ----
-  const sections = ['home','about','products','contact'];
-  const showSection = (name) => {
-    // default to 'home' if not recognized
-    if (!sections.includes(name)) name = 'home';
+  // Simple hash router (one "page" visible)
+  const SECTION_IDS = ['home','about','products','contact'];
+  const getTarget = name => SECTION_IDS.includes(name) ? name : 'home';
 
-    sections.forEach(id => {
+  const showSection = (name) => {
+    const target = getTarget(name);
+    // default: show all (fallback), then hide the non-target ones
+    SECTION_IDS.forEach(id => {
       const sec = document.getElementById(id);
-      if (sec) sec.classList.toggle('page-hidden', id !== name);
+      if (!sec) return;
+      sec.classList.toggle('page-hidden', id !== target);
     });
 
     // highlight nav
     document.querySelectorAll('.main-nav .nav-link').forEach(a => {
       const h = (a.getAttribute('href') || '').replace('#','');
-      a.classList.toggle('active', h === name);
+      a.classList.toggle('active', h === target);
     });
 
-    // scroll to top when switching "pages"
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // scroll top (portable)
+    window.scrollTo({ top: 0, behavior: 'auto' });
   };
 
   // On load + on hash change
-  const current = (location.hash || '#home').replace('#','');
-  showSection(current);
+  const initial = (location.hash || '#home').replace('#','');
+  showSection(initial);
   window.addEventListener('hashchange', () => {
     const h = (location.hash || '#home').replace('#','');
     showSection(h);
   });
 
-  // Make clicking the logo always go "home"
+  // Logo = home
   const logo = document.querySelector('.logo');
   if (logo) logo.addEventListener('click', (e) => {
     e.preventDefault();
