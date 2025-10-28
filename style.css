@@ -201,3 +201,26 @@ body{
   .card-grid{ grid-template-columns: 1fr; }
   .contact-grid{ grid-template-columns: 1fr; }
 }
+/* Show one 'page' (section) at a time */
+.page-hidden { display: none !important; }
+
+/* Active nav state */
+.main-nav .nav-link.active { color: #ff7a00; }
+
+/* Sticky translucent nav when scrolled */
+.main-nav.is-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+}
+
+/* Pure image logo */
+.logo-img {
+  width: 42px; height: 42px;
+  object-fit: contain;
+  display: block;
+}
+
+/* If you still have any .logo-fallback styles, remove them */
