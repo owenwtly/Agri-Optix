@@ -41,8 +41,8 @@ body{
 /* Logo — image only, no fallback overlay */
 .logo {
   display:inline-block;
-  width:64px;
-  height:64px;
+  width:300px;
+  height:300px;
   border-radius:10px;
   overflow:hidden;
   text-decoration:none;
