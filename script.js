@@ -1,9 +1,8 @@
-// Smoothly highlight active menu item (scrollspy) + fade-ins
-(function () {
-  const navLinks = [...document.querySelectorAll('.nav-link')];
-  const sections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+// AgriOptix site script
+// Handles fade-in animations, footer year, and active nav highlighting for multi-page setup
 
-  // IntersectionObserver for fade-in elements
+(function () {
+  // --- Fade-in animation when elements enter the viewport ---
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) e.target.classList.add('show');
@@ -12,21 +11,20 @@
 
   document.querySelectorAll('.section-observe .fade-in').forEach(el => revealObserver.observe(el));
 
-  // Scrollspy
-  const spyObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const id = entry.target.getAttribute('id');
-      const link = document.querySelector(`.main-nav a[href="#${id}"]`);
-      if (entry.isIntersecting && link) {
-        navLinks.forEach(a => a.classList.remove('active'));
-        link.classList.add('active');
-      }
-    });
-  }, { threshold: 0.6 });
+  // --- Highlight active nav link based on current page ---
+  const path = window.location.pathname.split("/").pop() || "index.html";
+  const currentPage = path.replace(".html", "") || "index";
 
-  sections.forEach(sec => sec && spyObserver.observe(sec));
+  document.querySelectorAll(".main-nav a.nav-link").forEach(a => {
+    const key = a.getAttribute("data-page");
+    if ((currentPage === "" && key === "index") || key === currentPage) {
+      a.classList.add("active");
+    } else {
+      a.classList.remove("active");
+    }
+  });
 
-  // Current year in footer
-  const y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
+  // --- Current year in footer ---
+  const yearSpan = document.getElementById("year");
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 })();
