@@ -9,7 +9,7 @@
     });
   }, { threshold: 0.15 });
 
-  document.querySelectorAll('.section-observe .fade-in').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.fade-in').forEach(el => revealObserver.observe(el));
 
   // --- Highlight active nav link based on current page ---
   const path = window.location.pathname.split("/").pop() || "index.html";
