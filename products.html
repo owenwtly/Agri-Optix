@@ -67,7 +67,7 @@
       <div class="container">
         <header class="section-head fade-in">
           <h2>Products</h2>
-          <p>Deployed modules, demos, and what’s coming next.</p>
+          <p>Ready for deployment products and products coming in the future.</p>
         </header>
 
         <div class="product-grid">
@@ -75,7 +75,17 @@
             <img src="media/bale_counting-2.png" alt="Bale Counting product" />
             <div class="product-body">
               <h3>Bale Counting</h3>
-              <p>Robust counting from a single calibrated camera. Uses geometric rectification, grid snapping, and temporal consensus for stable results.</p>
+              <p>
+                Our bale counting system uses computer vision and geometric calibration to automatically calculate the number of bales on a trailer, no human input required.
+              </p>
+              <p>
+                By calibrating a single camera to the dimensions of the trailer, the system “flattens” the image so each bale appears in perfect alignment, allowing rows and columns to be detected with precision. 
+                Unlike AI models that rely solely on object recognition (which often struggle with straps, lighting, or shadows), our approach is based on maths, not guesswork.
+              </p>
+              <p>
+                Once set up, it runs continuously, tracking each trailer as it arrives and calculating the bale count in real time. This saves hours during harvest and removes the risk of human error 
+                when recording loads. Designed to run on affordable devices like NVIDIA Jetson modules, the system brings advanced automation to farms of all sizes without the need for expensive infrastructure.
+              </p>
               <div class="video-wrap">
                 <div class="video-16x9">
                   <iframe
@@ -93,7 +103,18 @@
             <img src="media/weighbridge_log.png" alt="Weighbridge Automation product" />
             <div class="product-body">
               <h3>Weighbridge Automation</h3>
-              <p>Detect trailers, capture snapshots, and push structured logs to the operator GUI. Local processing on NVIDIA Jetson; integrates with your site workflow.</p>
+              <p>
+                The weighbridge automation system removes one of the slowest parts of the farm logistics chain manual data entry.
+              </p>
+              <p>
+                Using camera feeds positioned at the weighbridge, the system automatically detects when a vehicle enters or leaves, captures images, and identifies trailers and load types. 
+                Each event is logged, timestamped, and uploaded to a central dashboard, allowing farm managers to track deliveries and materials remotely.
+              </p>
+              <p>
+                Because it runs directly on-site using edge devices, it works even with limited internet connectivity and integrates easily with existing weighbridge setups. 
+                This means drivers no longer need to exit the cab, and the weighing process becomes faster, safer, and more consistent. Over time, the system builds a digital record of every load 
+                creating reliable traceability and operational insights.
+              </p>
               <div class="video-wrap">
                 <div class="video-16x9">
                   <iframe
@@ -111,11 +132,18 @@
             <img src="media/Coming soon.jpg" alt="Coming soon" />
             <div class="product-body">
               <h3>Coming Soon</h3>
-              <ul class="coming-soon">
-                <li><strong>FarmAI</strong> — field guidance and task scheduling</li>
-                <li><strong>AgriOptix Security</strong> — asset protection and alerts</li>
-              </ul>
-            </div>
+                <p>
+                  AgriOptix is just getting started. Alongside our bale counting and weighbridge systems, we’re developing several new modules that will expand the capabilities of our platform:
+                </p>
+                <p>
+                  • FarmAI — an intelligent assistant for field and crop management. It will analyse field data, recommend task schedules, and help farmers plan operations more efficiently - an agronomist from your phone.
+                </p>
+                <p>
+                  • AgriOptix Security - an advanced monitoring system that uses AI-based cameras to detect theft, equipment movement, and safety hazards in real time.
+                </p>
+                <p>
+                  • Health & Safety Vision — a camera-based safety module designed to prevent accidents around machinery. It can alert operators if someone enters a dangerous zone, improving on-farm safety compliance.
+                </p>
           </article>
         </div>
       </div>
